@@ -23,7 +23,7 @@ ClosedTy : BaseCategory → Set₁
 ClosedTy C = {Γ : Ctx C} → Ty Γ
 
 -- A "genuine" closed type should be natural.
--- I.e. it is a pseudonatural transformation from the terminal
+-- I.e., it is a pseudonatural transformation from the terminal
 -- pseudofunctor (from Ctx to Groupoids) to the pseudofunctor Ty.
 record IsClosedNatural {C} (U : ClosedTy C) : Set₁ where
   no-eta-equality
@@ -46,6 +46,7 @@ open IsClosedNatural public
 
 From-◇-ty : Ty {C = C} ◇ → ClosedTy C
 From-◇-ty T {Γ = Γ} = T [ !◇ Γ ]
+  -- T [ !◇ Γ ] < x , γ > = T < x , tt > 
 
 From-◇-ty-natural : (T : Ty {C = C} ◇) → IsClosedNatural (From-◇-ty T)
 IsClosedNatural.closed-natural (From-◇-ty-natural T) σ = transᵗʸ (ty-subst-comp T _ σ) (ty-subst-cong-subst (◇-terminal _ _ _) T)

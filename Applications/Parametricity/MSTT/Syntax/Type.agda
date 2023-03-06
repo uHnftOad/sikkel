@@ -17,5 +17,6 @@ open import Applications.Parametricity.MSTT.TypeExtension rel-ext
 import MSTT.Syntax.Type par-mode-theory par-ty-ext as GRType
 open GRType using (Ext)
 open GRType public hiding (Ext)
+    -- QUESTION: Why hide Ext? 
 
 pattern FromRel c = Ext (FromRel-code c) tt

@@ -1,6 +1,6 @@
 --------------------------------------------------
 -- Substitution Sequences
---
+-- 
 -- This module contains some results on applying a sequence of
 -- substitutions to a type or a term. The main results are
 -- ty-subst-seq-cong and tm-subst-seq-cong (although the latter
@@ -30,6 +30,7 @@ private
 data _⇒⁺_ : Ctx C → Ctx C → Set₁ where
   _◼ : {Δ : Ctx C} {Γ : Ctx C} (σ : Δ ⇒ Γ) → Δ ⇒⁺ Γ
   _∷_ : ∀ {Δ : Ctx C} {Γ : Ctx C} {Θ : Ctx C} (σ : Γ ⇒ Θ) (σs : Δ ⇒⁺ Γ) → Δ ⇒⁺ Θ
+    -- similar to function composition
 
 fold : Δ ⇒⁺ Γ → Δ ⇒ Γ
 fold (σ ◼) = σ

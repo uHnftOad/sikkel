@@ -35,6 +35,7 @@ record Tm (Γ : Ctx C) (T : Ty Γ) : Set where
     term : (x : Ob) (γ : Γ ⟨ x ⟩) → T ⟨ x , γ ⟩
     naturality : ∀ {x y} {γy : Γ ⟨ y ⟩} {γx : Γ ⟨ x ⟩} (f : Hom x y) (eγ : Γ ⟪ f ⟫ γy ≡ γx) →
                  T ⟪ f , eγ ⟫ (term y γy) ≡ term x γx
+      -- If f ∈ Hom(⟨ y , γy ⟩, ⟨ x , γx ⟩) in the category of elements of Γ, then T ⟪ f , eγ ⟫ maps _⟨ y , γy ⟩' : T ⟨ y , γy ⟩ to _⟨ x , γx ⟩' : T ⟨ x , γx ⟩. 
 open Tm public renaming (term to infix 15 _⟨_,_⟩')
 
 private

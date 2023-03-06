@@ -17,6 +17,7 @@ open import Applications.Parametricity.MSTT.TermExtension rel-ext
 import MSTT.Syntax.Term par-mode-theory par-ty-ext par-tm-ext as ParTerm
 open ParTerm using (ext)
 open ParTerm public hiding (ext)
+    -- QUESTION: Why hide ext?
 
 pattern from-rel c a b r = ext (from-rel-code c a b r) tt
 pattern from-rel1 c1 c2 f g r = ext (from-rel1-code c1 c2 f g r) tt

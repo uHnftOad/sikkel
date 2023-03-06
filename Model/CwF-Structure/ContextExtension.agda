@@ -31,6 +31,7 @@ private
 -- In MLTT, this would be written as Γ, x : T.
 _,,_ : (Γ : Ctx C) (T : Ty Γ) → Ctx C
 (Γ ,, T) ⟨ x ⟩ = Σ[ γ ∈ Γ ⟨ x ⟩ ] (T ⟨ x , γ ⟩)
+  --           = Σ Γ ⟨ x ⟩ T ⟨ x , _ ⟩
 (Γ ,, T) ⟪ f ⟫ [ γ , t ] = [ Γ ⟪ f ⟫ γ , T ⟪ f , refl ⟫ t ]
 ctx-id (Γ ,, T) = to-Σ-ty-eq T (ctx-id Γ) (trans (ty-cong-2-1 T hom-idˡ) (ty-id T))
 ctx-comp (Γ ,, T) = to-Σ-ty-eq T (ctx-comp Γ) (ty-cong-2-2 T hom-idʳ)

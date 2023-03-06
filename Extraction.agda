@@ -72,6 +72,7 @@ PshFun.naturality (func-★-◇ {T = T}{S = S} f ⟨ _ , _ ⟩') {ρ-xy = _} {e�
   trans (cong (λ x → f (to-★-◇-term x) ⟨ tt , tt ⟩') (ty-id T)) (sym (ty-id S))
 Tm.naturality (func-★-◇ f) _ refl = to-pshfun-eq (λ { _ refl _ → refl })
 
+-- If two types T and S are extractable, then so is the function type T ⇛ S. 
 extract-func : {T S : ClosedTy ★} → Extractable T → Extractable S → Extractable (T ⇛ S)
 translated-type (extract-func exT exS) = translated-type exT → translated-type exS
 extract-term (extract-func exT exS) f t = extract-term exS (app f (embed-term exT t))

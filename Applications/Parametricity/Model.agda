@@ -35,6 +35,10 @@ PrimFromRel : (A B : Set) (R : REL A B 0ℓ) → Ty {C = ⋀} ◇
 PrimFromRel A B R ⟨ left ,  _ ⟩ = A
 PrimFromRel A B R ⟨ right , _ ⟩ = B
 PrimFromRel A B R ⟨ relation , _ ⟩ = Σ[ p ∈ A × B ] uncurry R p
+  {- 
+    uncurry : ∀ {A : Set _} {B : A → Set _} {C : Σ A B → Set _} → ((x : A) → (y : B x) → C (x , y)) → ((p : Σ A B) → C p)
+    uncurry f (x , y) = f x y
+  -}
 _⟪_,_⟫_ (PrimFromRel A B R) left-id  _ = id
 _⟪_,_⟫_ (PrimFromRel A B R) right-id _ = id
 _⟪_,_⟫_ (PrimFromRel A B R) relation-id _ = id
@@ -52,6 +56,17 @@ ty-comp (PrimFromRel A B R) {f = right-rel} {g = relation-id} = refl
 
 FromRel : (A B : Set) (R : REL A B 0ℓ) → ClosedTy ⋀
 FromRel A B R {Γ = Γ} = PrimFromRel A B R [ !◇ Γ ]
+  {-
+      (FromRel A B R {Γ = Γ}) ⟨ left , _ ∈ Γ ⟨ left ⟩ ⟩
+    = (PrimFromRel A B R) ⟨ left , tt ⟩
+    = A
+
+      (FromRel A B R {Γ = Γ}) ⟨ right , _ ⟩
+    = B
+    
+      (FromRel A B R {Γ = Γ}) ⟨ relation , _ ⟩
+    = Σ[ p ∈ A × B ] uncurry R p
+  -}
 
 fromrel-natural : {A B : Set} {R : REL A B 0ℓ} → IsClosedNatural (FromRel A B R)
 closed-natural fromrel-natural σ = ty-subst-seq-cong (!◇ _ ∷ σ ◼) (!◇ _ ◼) (PrimFromRel _ _ _) (◇-terminal _ _ _)
@@ -76,14 +91,30 @@ infixr 0 _⟨→⟩_
 _⟨→⟩_ : ∀ {a b c d} {A : Set a} {B : Set b} {C : Set c} {D : Set d} →
         REL A C 0ℓ → REL B D 0ℓ → REL (A → B) (C → D) _
 (R ⟨→⟩ S) f g = ∀ {a c} → R a c → S (f a) (g c)
+  -- the relation that relates two maps f : A → B and g : C → D exactly when they respect relations R and S in the sense that if two terms a : A and c : C are related by R, then f a : B and g c : D are related by S
 
 from-rel1 : {A1 B1 : Set} {R1 : REL A1 B1 0ℓ}
             {A2 B2 : Set} {R2 : REL A2 B2 0ℓ}
             (f : A1 → A2) (g : B1 → B2) → (R1 ⟨→⟩ R2) f g →
             Tm (Γ ,, FromRel A1 B1 R1) (FromRel A2 B2 R2)
 from-rel1 f g h ⟨ left  , [ _ , a ] ⟩' = f a
+  {-
+    [ _ , a ] : (Γ ,, FromRel A1 B1 R1) ⟨ left ⟩
+    = Σ[ γ ∈ Γ ⟨ left ⟩ ] (FromRel A1 B1 R1 ⟨ left , γ ⟩)
+    = Σ[ γ ∈ Γ ⟨ left ⟩ ] A1
+    a : A1
+    f a : A2 = (FromRel A2 B2 R2) ⟨ left  , [ _ , a ] ⟩
+  -}
 from-rel1 f g h ⟨ right , [ _ , b ] ⟩' = g b
 from-rel1 f g h ⟨ relation , [ _ , [ [ a , b ] , r ] ] ⟩' = [ [ f a , g b ] , h r ]
+  {-
+    [ _ , [ [ a , b ] , r ] ] : (Γ ,, FromRel A1 B1 R1) ⟨ relation ⟩
+    = Σ[ γ ∈ Γ ⟨ relation ⟩ ] (FromRel A1 B1 R1 ⟨ relation , γ ⟩)
+    = Σ[ γ ∈ Γ ⟨ relation ⟩ ] Σ[ [ a , b ] ∈ A1 × B1 ] uncurry R [ a , b ] 
+    
+    [ [ f a , g b ] , h r ] : (FromRel A2 B2 R2) ⟨ relation , [ _ , [ [ a , b ] , r ] ] ⟩
+    = Σ[ [ a' , b' ] ∈ A2 × B2 ] uncurry R2 [ a' , b' ]
+  -}
 Tm.naturality (from-rel1 f g h) left-id refl = refl
 Tm.naturality (from-rel1 f g h) right-id refl = refl
 Tm.naturality (from-rel1 f g h) relation-id refl = refl

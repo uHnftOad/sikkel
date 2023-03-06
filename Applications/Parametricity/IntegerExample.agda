@@ -140,6 +140,8 @@ subtract A = lam[ "a" ∈  A ] lam[ "b" ∈ A ] add ∙ svar "a" ∙ (negate ∙
 
 ℤ : TyExpr ⋀
 ℤ = FromRel ℤ-code
+  -- = (Ext ⋀) (FromRel-code ℤ-code) tt
+  -- Ext ⋀ : TyExpr ⋀
 
 instance
   ℤ-is-int : IntStructure ℤ
@@ -148,11 +150,12 @@ instance
   IntStructure.add-well-typed ℤ-is-int = refl
   IntStructure.negate-well-typed ℤ-is-int = refl
 
--- Γ ⊢ substract★-left : ⟨ forget-right ∣ ℤ ⟩ ⇛ ⟨ forget-right ∣ ℤ ⟩ ⇛ ⟨ forget-right ∣ ℤ ⟩
+-- Creates a function at mode ★
+-- Γ ⊢ substract⋆-left : ⟨ forget-right ∣ ℤ ⟩ ⇛ ⟨ forget-right ∣ ℤ ⟩ ⇛ ⟨ forget-right ∣ ℤ ⟩
 subtract★-left : TmExpr ★
 subtract★-left = liftA2 forget-right ℤ ℤ ℤ ∙⟨ forget-right ⟩ subtract ℤ
 
--- Γ ⊢ substract★-right : ⟨ forget-left ∣ ℤ ⟩ ⇛ ⟨ forget-left ∣ ℤ ⟩ ⇛ ⟨ forget-left ∣ ℤ ⟩
+-- Γ ⊢ substract⋆-right : ⟨ forget-left ∣ ℤ ⟩ ⇛ ⟨ forget-left ∣ ℤ ⟩ ⇛ ⟨ forget-left ∣ ℤ ⟩
 subtract★-right : TmExpr ★
 subtract★-right = liftA2 forget-left ℤ ℤ ℤ ∙⟨ forget-left ⟩ subtract ℤ
 

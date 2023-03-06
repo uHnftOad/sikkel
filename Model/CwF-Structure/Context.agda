@@ -42,7 +42,7 @@ module _ {C : BaseCategory} where
       Δ Γ Θ : Ctx C
 
   -- The following proof is needed to define composition of morphisms in the category of elements
-  -- of Γ and is used e.g. in the definition of types (in CwF-Structure.Types) and the definition
+  -- of Γ and is used e.g., in the definition of types (in CwF-Structure.Types) and the definition
   -- of function types.
   strong-ctx-comp : (Γ : Ctx C) {f : Hom x y} {g : Hom y z} {γz : Γ ⟨ z ⟩} {γy : Γ ⟨ y ⟩} {γx : Γ ⟨ x ⟩} →
                     (eq-zy : Γ ⟪ g ⟫ γz ≡ γy) (eq-yx : Γ ⟪ f ⟫ γy ≡ γx) →
@@ -150,7 +150,7 @@ module _ {C : BaseCategory} where
 
 
   --------------------------------------------------
-  -- The empty context (i.e. terminal object in the category of contexts)
+  -- The empty context (i.e., terminal object in the category of contexts)
 
   ◇ : Ctx C
   ◇ ⟨ _ ⟩ = ⊤
@@ -162,5 +162,6 @@ module _ {C : BaseCategory} where
   func (!◇ Γ) _ = tt
   naturality (!◇ Γ) = refl
 
+  -- A proof that ◇ is indeed terminal
   ◇-terminal : (Γ : Ctx C) (σ τ : Γ ⇒ ◇) → σ ≅ˢ τ
   eq (◇-terminal Γ σ τ) _ = refl

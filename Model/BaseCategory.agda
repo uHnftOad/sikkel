@@ -19,6 +19,7 @@ record BaseCategory : Set₁ where
     Hom : Ob → Ob → Set
     hom-id : ∀ {x} → Hom x x
     _∙_ : ∀ {x y z} → Hom y z → Hom x y → Hom x z
+      -- g ∙ f (Agda) := gf (category theory)
 
   infixr 9 _∙_
 
@@ -115,6 +116,37 @@ hom-idˡ ⋀ {f = right-id} = refl
 hom-idˡ ⋀ {f = relation-id} = refl
 hom-idˡ ⋀ {f = left-rel} = refl
 hom-idˡ ⋀ {f = right-rel} = refl
+
+--------------------------------------------------
+-- Newly added base category
+data ¶-Obj : Set where
+  left : ¶-Obj
+  relation : ¶-Obj
+
+data ¶-Hom : ¶-Obj → ¶-Obj → Set where
+  left-id     : ¶-Hom left left
+  relation-id : ¶-Hom relation relation
+  left-rel    : ¶-Hom left relation
+
+¶ : BaseCategory
+Ob ¶ = ¶-Obj
+Hom ¶ = ¶-Hom
+hom-id ¶ {left} = left-id
+hom-id ¶ {relation} = relation-id
+_∙_ ¶ g left-id = g
+_∙_ ¶ g relation-id = g
+_∙_ ¶ relation-id left-rel = left-rel
+∙assoc ¶ {f = left-id} = refl
+∙assoc ¶ {f = relation-id} = refl
+∙assoc ¶ {f = left-rel} {g = relation-id} = refl
+hom-idʳ ¶ {x = left} = refl
+hom-idʳ ¶ {x = relation} = refl
+hom-idˡ ¶ {f = left-id} = refl
+hom-idˡ ¶ {f = relation-id} = refl
+hom-idˡ ¶ {f = left-rel} = refl
+
+
+--------------------------------------------------
 
 Type-groupoid : (X : Set) → BaseCategory
 Ob (Type-groupoid X) = X

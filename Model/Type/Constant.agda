@@ -1,6 +1,6 @@
 --------------------------------------------------
 -- Constant presheaves
---
+-- 
 -- Every Agda type can be turned into a presheaf type in any context.
 -- This lets us define the types of booleans, natural numbers, ...
 --------------------------------------------------

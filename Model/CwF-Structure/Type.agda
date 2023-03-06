@@ -45,10 +45,12 @@ record Ty (Γ : Ctx C) : Set₁ where
               {γy : Γ ⟨ y ⟩} {γx : Γ ⟨ x ⟩} {eγ : Γ ⟪ f ⟫ γy ≡ γx} {eγ' : Γ ⟪ f' ⟫ γy ≡ γx}
               {t : ty-cell y γy} →
               ty-hom f eγ t ≡ ty-hom f' eγ' t
+      -- eγ and eγ' are proofs that f, f' ∈ Hom(⟨ y , γy ⟩, ⟨ x , γx ⟩) in the category of elements of Γ
     ty-id : ∀ {x} {γ : Γ ⟨ x ⟩} {t : ty-cell x γ} → ty-hom hom-id (ctx-id Γ) t ≡ t
     ty-comp : ∀ {x y z} {f : Hom x y} {g : Hom y z} {γz : Γ ⟨ z ⟩} {γy : Γ ⟨ y ⟩} {γx : Γ ⟨ x ⟩} →
               {eγ-zy : Γ ⟪ g ⟫ γz ≡ γy} {eγ-yx : Γ ⟪ f ⟫ γy ≡ γx} {t : ty-cell z γz} →
               ty-hom (g ∙ f) (strong-ctx-comp Γ eγ-zy eγ-yx) t ≡ ty-hom f eγ-yx (ty-hom g eγ-zy t)
+      -- eγ-zy is a proof that g ∈ Hom(⟨ z , γz ⟩, ⟨ y , γy ⟩), and eγ-yx is a proof that f ∈ Hom(⟨ y , γy ⟩, ⟨ x , γx ⟩).
 open Ty public renaming (ty-cell to infix 15 _⟨_,_⟩; ty-hom to infixr 11 _⟪_,_⟫_)
 
 private
@@ -129,7 +131,7 @@ from-Σ-ty-eq T refl = [ refl , strong-ty-id T ]
 --------------------------------------------------
 -- Natural transformations between types
 
-record _↣_ {Γ : Ctx C} (T : Ty Γ) (S : Ty Γ) : Set where
+record _↣_  {Γ : Ctx C} (T : Ty Γ) (S : Ty Γ) : Set where
   no-eta-equality
   field
     func : ∀ {x} {γ} → T ⟨ x , γ ⟩ → S ⟨ x , γ ⟩
@@ -290,7 +292,7 @@ module ≅ᵗʸ-Reasoning where
   syntax step-≅˘ T S≅R S≅T = T ≅˘⟨ S≅T ⟩ S≅R
 
 
--- Ty Γ is a groupoid and not a setoid (i.e. T ≅ᵗʸ S is not necessarily a proposition).
+-- Ty Γ is a groupoid and not a setoid (i.e., T ≅ᵗʸ S is not necessarily a proposition).
 -- Therefore, we want to express equalities of natural isomorphisms of types.
 record _≅ᵉ_ {T S : Ty Γ} (e1 e2 : T ≅ᵗʸ S) : Set where
   no-eta-equality
@@ -360,6 +362,8 @@ from-eq symᵗʸ-transᵗʸ = reflⁿ
 
 _[_] : Ty Γ → Δ ⇒ Γ → Ty Δ
 T [ σ ] ⟨ x , δ ⟩ = T ⟨ x , func σ δ ⟩
+  -- δ : Δ ⟨ x ⟩
+  -- func σ : ∀ {x} → Δ ⟨ x ⟩ → Γ ⟨ x ⟩
 _⟪_,_⟫_ (_[_] {Γ = Γ} T σ) f {δy}{δx} eγ-yx t = T ⟪ f , proof ⟫ t
   where
     proof : Γ ⟪ f ⟫ func σ δy ≡ func σ δx

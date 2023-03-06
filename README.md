@@ -24,7 +24,7 @@ which will allow you to use Sikkel.
 
 
 ## Overview of this Repository
-This is Youie's version.
+
 * The deeply embedded syntactic layer can be found in the MSTT directory, together with the sound type checker.
 * The formalization of presheaf models is located in the folder Model.
 * Extracting shallowly embedded terms in the model to Agda programs is implemented in the file Extraction.agda.

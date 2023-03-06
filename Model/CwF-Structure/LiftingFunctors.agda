@@ -1,6 +1,6 @@
 --------------------------------------------------
 -- Lifting Functors
---
+-- 
 -- In this file we show that a functor from base categories C to D
 --   can be lifted to a "strict" CwF endomorphism from Psh(D) to Psh(C).
 --------------------------------------------------
